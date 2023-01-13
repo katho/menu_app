@@ -1,6 +1,5 @@
 package com.twentyfoura.menuapp.controller;
 
-import com.twentyfoura.menuapp.constants.ConstantsConfiguration;
 import com.twentyfoura.menuapp.model.CrudResponse;
 import com.twentyfoura.menuapp.model.Ingredient;
 import com.twentyfoura.menuapp.service.IngredientManagerService;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class IngredientController {
-    final static Logger logger = LoggerFactory.getLogger(IngredientController.class);
+    public Logger logger = LoggerFactory.getLogger(IngredientController.class);
     @Autowired
     public IngredientManagerService ingredientManagerService;
 
