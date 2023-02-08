@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "5471a394-2451-42f2-adf8-bfa552b6e8f2",
+		"name": "MenuApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8907661"
+	},
+	"item": [
+		{
+			"name": "createIngredient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ingredient\":\"pimienta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/menuapp/getingredient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"menuapp",
+						"getingredient"
+					],
+					"query": [
+						{
+							"key": "ingredient",
+							"value": "pimienta",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetIngredient",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/menuapp/getingredient?ingredient=paprika",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"menuapp",
+						"getingredient"
+					],
+					"query": [
+						{
+							"key": "ingredient",
+							"value": "paprika"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
