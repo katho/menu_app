@@ -22,11 +22,18 @@ public class IngredientController {
 
     @PostMapping("v1/menuapp/createingredient")
     public ResponseEntity<CrudResponse> getIngredient(@RequestBody Ingredient ingredient){
-        logger.info(ingredient.getIngredient());
-        String response = ingredientManagerService.createIngredient(ingredient.getIngredient());
         CrudResponse crudResponse = new CrudResponse();
-        crudResponse.setMessage(response);
-        return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.OK);
+        if(ingredient.getIngredient().equals(null)){
+            crudResponse.setMessage("Please enter a valid ingredient!");
+            return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.BAD_REQUEST);
+        }
+        else{
+            logger.info(ingredient.getIngredient());
+            String response = ingredientManagerService.createIngredient(ingredient.getIngredient());
+            crudResponse.setMessage(response);
+            return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.OK);
+        }
+
     }
 
     @GetMapping("v1/menuapp/getingredient")
