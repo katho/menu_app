@@ -16,6 +16,8 @@ public class IngredientManagerService {
 
     public String createIngredient(String ingredient){
         Optional<IngredientEntity> ingredientEntity = ingredientsRepository.getIngredientByIngredient(ingredient);
+        IngredientEntity ingredientEntity1 = new IngredientEntity();
+
         if(!ingredientEntity.isPresent()){
             IngredientEntity ingredientEntityToSave = new IngredientEntity();
             ingredientEntityToSave.setIngredient(ingredient);

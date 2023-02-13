@@ -3,6 +3,7 @@ package com.twentyfoura.menuapp.controller;
 import com.twentyfoura.menuapp.model.CrudResponse;
 import com.twentyfoura.menuapp.model.Ingredient;
 import com.twentyfoura.menuapp.service.IngredientManagerService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,10 @@ public class IngredientController {
 
     @PostMapping("v1/menuapp/createingredient")
     public ResponseEntity<CrudResponse> getIngredient(@RequestBody Ingredient ingredient){
+
+        String regex = "[a-z][A-Z] ";
         CrudResponse crudResponse = new CrudResponse();
-        if(ingredient.getIngredient().equals(null)){
+        if(StringUtils.isBlank(ingredient.getIngredient())){
             crudResponse.setMessage("Please enter a valid ingredient!");
             return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.BAD_REQUEST);
         }

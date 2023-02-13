@@ -115,4 +115,33 @@ public class IngredientControllerTest {
 
     }
 
+    @Test
+    public void createIngredient_IngredientIsCreatedBadRequestEmptyString() throws Exception {
+        //Prepare env
+        mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
+        String endpoint = "/v1/menuapp/createingredient";
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredient(" ");
+        //prepare service
+        Mockito.when(ingredientManagerService.createIngredient(anyString())).thenReturn("created salt");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(ingredient);
+        String response = "";
+        //Prepare request
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .accept(MediaType.APPLICATION_JSON);
+        //Execute request
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        MockHttpServletResponse mockHttpServletResponse = result.getResponse();
+        response = mockHttpServletResponse.getContentAsString();
+        byte[] jsonData = response.getBytes();
+        assert(mockHttpServletResponse.getStatus() == 400);
+        //ObjectMapper mapper = new ObjectMapper();
+        //CrudResponse crudResponse = mapper.readValue(jsonData, CrudResponse.class);
+
+    }
+
 }
