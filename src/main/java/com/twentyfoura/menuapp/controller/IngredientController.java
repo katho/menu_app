@@ -42,9 +42,14 @@ public class IngredientController {
     @GetMapping("v1/menuapp/getingredient")
     public ResponseEntity<CrudResponse> getIngredient(@Param("ingredient") String ingredient){
         logger.info(ingredient);
-        String response = ingredientManagerService.getIngredient(ingredient);
         CrudResponse crudResponse = new CrudResponse();
+        if(StringUtils.isBlank(ingredient)){
+            crudResponse.setMessage("Please enter a valid ingredient!");
+            return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.BAD_REQUEST);
+        }
+        String response = ingredientManagerService.getIngredient(ingredient);
         crudResponse.setMessage(response);
         return new ResponseEntity<CrudResponse>(crudResponse,HttpStatus.OK);
     }
+
 }

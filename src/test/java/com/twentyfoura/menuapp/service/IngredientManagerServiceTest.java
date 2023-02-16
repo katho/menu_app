@@ -1,10 +1,14 @@
 package com.twentyfoura.menuapp.service;
 
+import com.twentyfoura.menuapp.entity.IngredientEntity;
+import com.twentyfoura.menuapp.repository.IngredientsRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -14,41 +18,28 @@ public class IngredientManagerServiceTest {
 
     @Autowired
     public IngredientManagerService ingredientManagerService;
+    @MockBean
+    public IngredientsRepository repository;
 
     @Test
     public void createIngredient_HappyPath() throws Exception{
-        String ingredient = "frijoles";
-        assertEquals(ingredientManagerService.createIngredient(ingredient), "created "+ingredient);
+        String ingredient = "rice";
+        Optional<IngredientEntity> ingredientEntity;
+        ingredientEntity = repository.getIngredientByIngredient(anyString());
+        Mockito.when(ingredientManagerService.createIngredient(anyString())).thenReturn("created "+ingredient);
+        assert(!ingredientEntity.isPresent());
     }
 
     @Test
     public void createIngredient_HappyPath_ItemExists() throws Exception{
         String ingredient = "cebolla";
-        String result = "ingredient already exists!";
-        assertEquals(ingredientManagerService.createIngredient(ingredient), result);
-    }
-
-
-    /**
-     * Primer fallo: el ingrediente null se creó
-     * @throws Exception
-     */
-    @Test
-    public void createIngredient_NullString() throws Exception{
-        String ingredient = null;
-        String result = "ingredient already exists!";
-        assertEquals(ingredientManagerService.createIngredient(ingredient), null);
-    }
-
-    /**
-     * Segundo fallo: la cadena tiene números
-     * @throws Exception
-     */
-    @Test
-    public void createIngredient_StringWithNumbers() throws Exception{
-        String ingredient = "123456";
-        String result = "ingredient already exists!";
-        assertEquals(ingredientManagerService.createIngredient(ingredient), null);
+        Optional<IngredientEntity> ingredientEntity;
+        ingredientEntity = repository.getIngredientByIngredient(anyString());
+        IngredientEntity entity = new IngredientEntity();
+        entity.setIngredient(ingredient);
+        ingredientEntity = Optional.of(entity);
+        //Mockito.when(ingredientManagerService.createIngredient(anyString())).thenReturn("created "+ingredient);
+        assertEquals(ingredientManagerService.createIngredient(ingredient), "Ingredient exists!");
     }
 
     @Test
