@@ -56,4 +56,11 @@ public class IngredientManagerServiceTest {
         assertEquals(result, "Ingredient does not exists!");
     }
 
+    @Test
+    public void getIngredient_HappyPath_IngredientStringNullBlankWhiteSpace() throws Exception{
+        String ingredient = null;
+        String result = ingredientManagerService.getIngredient(ingredient);
+        assertEquals(result, "Please enter a valid ingredient!");
+    }
+
 }
