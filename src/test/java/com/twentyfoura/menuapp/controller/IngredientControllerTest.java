@@ -28,6 +28,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -232,6 +236,37 @@ public class IngredientControllerTest {
         assert(crudResponse.getMessage().equals("Please enter a valid ingredient!"));
 
          */
+    }
+
+    @Test
+    public void getIngredientByList_HappyPathAllItemsInListAreValid() throws Exception{
+        mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
+        String endpoint = "v1/menuapp/createingredientbylist";
+        ObjectMapper mapper = new ObjectMapper();
+        String ingredientList = mapper.writeValueAsString(createList());
+        String response = "";
+        Mockito.when(ingredientManagerService.createIngredientByList(anyList())).thenReturn("process finished: {}");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ingredientList);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse mockHttpServletResponse = result.getResponse();
+        response = mockHttpServletResponse.getContentAsString();
+        byte[] jsonData = response.getBytes();
+        CrudResponse crudResponse = mapper.readValue(jsonData, CrudResponse.class);
+        assert(crudResponse.getMessage().equals("process finished: {}"));
+
+    }
+
+    public List<String> createList() {
+        List<String> theList =  new ArrayList<>();
+        String aList = "arroz,fresa,guayaba,tomate,lenteja";
+        String[] list = aList.split(",");
+        for (String item:list){
+            theList.add(item);
+        }
+        return theList;
     }
 
 }
