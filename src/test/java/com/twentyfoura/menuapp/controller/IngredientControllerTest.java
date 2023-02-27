@@ -29,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.ServletContext;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyList;
@@ -243,6 +244,7 @@ public class IngredientControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
         String endpoint = "v1/menuapp/createingredientbylist";
         ObjectMapper mapper = new ObjectMapper();
+        HashMap<String, String> myHashMap = new HashMap<>();
         String ingredientList = mapper.writeValueAsString(createList());
         String response = "";
         Mockito.when(ingredientManagerService.createIngredientByList(anyList())).thenReturn("process finished: {}");
@@ -254,6 +256,8 @@ public class IngredientControllerTest {
         MockHttpServletResponse mockHttpServletResponse = result.getResponse();
         response = mockHttpServletResponse.getContentAsString();
         byte[] jsonData = response.getBytes();
+        String myResponse = mapper.writeValueAsString(String.class);
+
         CrudResponse crudResponse = mapper.readValue(jsonData, CrudResponse.class);
         assert(crudResponse.getMessage().equals("process finished: {}"));
 

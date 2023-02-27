@@ -13,4 +13,8 @@ public class IngredientEntity {
 
     @Column
     private String ingredient;
+
+    @ManyToOne
+    @JoinColumn(name="id")
+    private RecipeEntity recipeEntity;
 }
