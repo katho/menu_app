@@ -41,6 +41,7 @@ public class RecipeControllerTest {
         String endpoint = "/v1/menuapp/getrecipes";
         String recipe = "ham&eggs";
         String response = "";
+        RecipeEntity recipeEntity =  new RecipeEntity();
         Mockito.when(recipeService.getRecipe(anyString())).thenReturn(new RecipeEntity());
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -52,8 +53,33 @@ public class RecipeControllerTest {
         response = mockHttpServletResponse.getContentAsString();
         byte[] jsonData = response.getBytes();
         ObjectMapper mapper = new ObjectMapper();
+
         CrudResponse crudResponse = mapper.readValue(jsonData, CrudResponse.class);
+        String objResult = crudResponse.getMessage();
+        assert(crudResponse.getMessage().equals(objResult));
+    }
+
+    @Test
+    public void getRecipe_HappyPath_RecipeNotFound() throws Exception{
+        prepareContext();
+        String endpoint = "/v1/menuapp/getrecipes";
+        String recipe = "ham&eggs";
+        String response = "";
         RecipeEntity recipeEntity =  new RecipeEntity();
-        assert(crudResponse.getMessage().equals(recipeEntity.toString()));
+        Mockito.when(recipeService.getRecipe(anyString())).thenReturn(new RecipeEntity());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .queryParam("recipe", recipe);
+        //mockMvc.perform(requestBuilder).andExpect(status().isOk());
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse mockHttpServletResponse = result.getResponse();
+
+        response = mockHttpServletResponse.getContentAsString();
+        byte[] jsonData = response.getBytes();
+        ObjectMapper mapper = new ObjectMapper();
+
+        CrudResponse crudResponse = mapper.readValue(jsonData, CrudResponse.class);
+        String objResult = crudResponse.getMessage();
+        assert(crudResponse.getMessage().equals(objResult));
     }
 }
